@@ -1,0 +1,66 @@
+﻿@page "/employeedata"
+
+<PageTitle>Emplyee data</PageTitle>
+
+@using BlazorApp2.Data
+@using BlazorApp2.Models
+@inject EmpService2 empservice
+@inject EmpService1 empservices
+<h1>Employee data</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>Adderss</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in employees)
+            {
+                <tr>
+                    <td>@emp.id</td>
+                    <td>@emp.name</td>
+                    <td>@emp.email</td>
+                    <td>@emp.address</td>
+                    <!-- Add other cells as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Emp>? todoItems;
+
+    protected override void OnInitialized()
+    {
+        // Load Todo items from the service
+        todoItems = empservices.GetTodoItems();
+    }
+
+    private List<AllEmployeeResult>? employees;
+
+    // This method will be called when the component is initialized
+    protected override async Task OnInitializedAsync()
+    {
+        // Call the service method to get the list of employees
+        employees = await empservice.GetAllEmployeesAsync(value: 1);
+    }
+
+
+   
+  
+
+}
+
